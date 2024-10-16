@@ -31,6 +31,19 @@ class WarriorProtocol():
         self.attackSpe:list[AttackSpe] = attackSpe
         self.state:StateWarrior = BasicState()
         self.items:list[ItemProtocol] = items
+        self.level:int = 1
+        self.xp:int = 0
+        self.allowedTransformation = []
+
+    def checkLevelUp(self):
+        # TODO add unlocked Transformation
+        match self.xp:
+            case 10:
+                self.level = 2
+            case 20:
+                self.level = 3
+            case 30:
+                self.level = 3
 
 class Saiyen(WarriorProtocol):
 

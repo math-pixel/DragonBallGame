@@ -16,7 +16,11 @@ class Training():
         self.warriorToTrain = warrior
         self.startTraining(levelOfTraining)
 
-    def upgradeCharactere(self, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
+    def upgradeCharactere(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
+        
+        self.warriorToTrain.level += xpEarn
+        self.warriorToTrain.checkLevelUp()
+        
         if(life != None):
             self.warriorToTrain.life += life
 
