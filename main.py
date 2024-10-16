@@ -1,8 +1,9 @@
 from src.Characteres import WarriorFactory, Race
+from src.TrainingMode import Training
 
 
 if __name__ == "__main__":
     saiyen = WarriorFactory().createWarrior(Race.SAIYEN)
-    android = WarriorFactory().createWarrior(Race.ANDROID)
-    namek = WarriorFactory().createWarrior(Race.NAMEKIANS)
-    print(saiyen, android, namek)
+    print(saiyen.__dict__)
+    Training().trainCharactere(saiyen, 1)
+    print(saiyen.__dict__)
