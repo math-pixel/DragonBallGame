@@ -15,11 +15,11 @@ class WarriorFactory():
     def createWarrior(self, race:Race):
         match race:
             case Race.SAIYEN:
-                return Saiyen([PunchAttack()], [chargePunch()], [SenzuBeam()], life=20, mana=10)
+                return Saiyen([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=20, mana=10)
             case Race.ANDROID:
-                return Android([PunchAttack()], [chargePunch()], [SenzuBeam()], life=10, mana=50)
+                return Android([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=10, mana=50)
             case Race.NAMEKIANS:
-                return Namekians([PunchAttack()], [chargePunch()], [SenzuBeam()], life=15, mana=30)
+                return Namekians([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=15, mana=30)
 
 class WarriorProtocol():
 
