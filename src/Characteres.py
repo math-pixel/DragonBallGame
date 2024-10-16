@@ -38,17 +38,18 @@ class WarriorProtocol():
         self.description:str = ""
 
     def checkLevelUp(self):
-        # TODO add unlocked Transformation
-        match self.xp:
-            case 10:
-                self.level = 2
+        if self.xp >= 10 and self.xp < 20:
+            if self.level == 1:
                 self.unlockTransformation.append(self.allTransformation[0])
-            case 20:
-                self.level = 3
+            self.level = 2
+        elif self.xp >= 20 and self.xp < 30:
+            if self.level == 2:
                 self.unlockTransformation.append(self.allTransformation[1])
-            case 30:
-                self.level = 3
-                self.unlockTransformation.append(self.allTransformation[2])
+            self.level = 3
+        # elif self.xp >= 30 and self.xp < 40:
+        #     if self.level == 2:
+        #         self.unlockTransformation.append(self.allTransformation[2])
+        #     self.level = 3
 
 class Saiyen(WarriorProtocol):
 

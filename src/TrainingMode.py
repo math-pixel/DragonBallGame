@@ -18,7 +18,7 @@ class Training():
 
     def upgradeCharactere(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
         
-        self.warriorToTrain.level += xpEarn
+        self.warriorToTrain.xp += xpEarn
         self.warriorToTrain.checkLevelUp()
         
         if(life != None):
