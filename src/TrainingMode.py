@@ -38,4 +38,4 @@ class Training():
 
     def startTraining(self, level):
         # TODO GAME
-        self.upgradeCharactere(life=2, mana=1)
+        self.upgradeCharactere(xpEarn = 10, life=2, mana=1)
