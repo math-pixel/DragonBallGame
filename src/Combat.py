@@ -1,6 +1,6 @@
 from src.Characteres import *
 from src.tools import *
-
+import random
 
 class FightTurn():
 
@@ -147,9 +147,41 @@ class WarriorTurnManager:
         # apply les effet du perso
         self.botWarrior.applyStateEffect() 
         if not isinstance(self.botWarrior.state, ParalyzedState):
-            print("#BOT ACTION#")
+            # Define possible actions for the bot
+            possible_actions = [
+                self.botSimpleAttack,    # Normal attack
+                self.botSpecialAttack,   # Special attack
+                self.botUseItem          # Use an item (if implemented)
+            ]
+            
+            # Randomly choose an action
+            chosen_action = random.choice(possible_actions)
+            chosen_action()
         else:
             print("Le bot est paralysé et passe son tour.")
+
+    def botSimpleAttack(self):
+        attack = random.choice(self.botWarrior.attack)
+        print(f"Le bot utilise {attack.__class__.__name__} pour attaquer.")
+        attack.attack(self.botWarrior, self.playerWarrior)
+
+    def botSpecialAttack(self):
+        if self.botWarrior.attackSpe:
+            attackSpe = random.choice(self.botWarrior.attackSpe)
+            print(f"Le bot utilise {attackSpe.__class__.__name__} pour attaquer.")
+            attackSpe.attack(self.botWarrior, self.playerWarrior)
+        else:
+            print("Le bot n'a pas d'attaque spéciale disponible, il utilise une attaque simple.")
+            self.botSimpleAttack()
+
+    def botUseItem(self):
+        if self.botWarrior.items:
+            item = random.choice(self.botWarrior.items)
+            print(f"Le bot utilise {item.__class__.__name__}.")
+            item.use(self.botWarrior)
+        else:
+            print("Le bot n'a pas d'objet disponible, il attaque à la place.")
+            self.botSimpleAttack()
 
 # -- combat
 # choisir entre 
