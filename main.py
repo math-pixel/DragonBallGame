@@ -1,50 +1,34 @@
-from src.Characteres import WarriorFactory, Race, SuperSaiyen, GorilleGeant
+from src.Characteres import WarriorFactory, Race
 from src.TrainingMode import Training
+from src.Combat import Arene
+from src.tools import *
 
 # Personaliser mon personnage
 
 # choisir entre entrainement et combat
 
-# -- combat
-# choisir entre 
-# - utiliser un objet 
-#   -- btn --
-#   retour
-#   par attaque
-# - Attaquer 
-#   -- btn --
-#   retour
-#   par attaque
-# - Transformation
-#   -- bouton -- 
-#   - retour
-#   - par transformation 
 
 character = None
 roomOfTime = Training.getInstance()
+arene = None
 
 def creationCharacterMenu():
     global character
-    print("Choisis ton perso :")
-    i = input("\n1: Saiyen \n2: Android \n3: Namekian")
-    match i:
-        case "1":
-            character = WarriorFactory().createWarrior(Race.SAIYEN)
-        case "2":
-            character = WarriorFactory().createWarrior(Race.ANDROID)
-        case "3":
-            character = WarriorFactory().createWarrior(Race.NAMEKIANS)
+    character = FORM.display("Choisis ton perso :", ["Saiyen","Android","Namekian"], [lambda: WarriorFactory().createWarrior(Race.SAIYEN), lambda : WarriorFactory().createWarrior(Race.ANDROID), lambda : WarriorFactory().createWarrior(Race.NAMEKIANS)])
     character.showStats()
 
 def mainMenu():
     global character
+    global arene
 
     i = input("\n1: Entrainement \n 2 : Combat")
     match i:
         case "1":
             roomOfTime.trainCharactere(character, 1)
+            mainMenu()
         case "2":
-            pass
+            arene = Arene(character)
+            arene.playerTurnFight()
 
 
 
