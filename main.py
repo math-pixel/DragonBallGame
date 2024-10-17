@@ -16,7 +16,6 @@ arene = None
 def creationCharacterMenu():
     global character
     character = FORM.display("Choisis ton perso :", ["Saiyen","Android","Namekian"], [lambda: WarriorFactory().createWarrior(Race.SAIYEN), lambda : WarriorFactory().createWarrior(Race.ANDROID), lambda : WarriorFactory().createWarrior(Race.NAMEKIANS)])
-    character.showStats()
 
 def mainMenu():
     global character

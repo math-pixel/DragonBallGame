@@ -61,6 +61,34 @@ class WarriorProtocol():
         if self.life <= 0:
             return False
         return True
+    
+    def upgradeWarrior(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
+        
+        print("------ Result of Training ------")
+
+        self.warriorToTrain.xp += xpEarn
+        self.warriorToTrain.checkLevelUp()
+        
+        if(life != None):
+            self.warriorToTrain.life += life
+            print(f"life + {life}")
+
+        if(mana != None):
+            self.warriorToTrain.mana += mana
+            print(f"mana + {mana}")
+
+        if(attack != None):
+            self.warriorToTrain.attack.append(attack)
+            print(f"yay a new attack : {attack}")
+
+        if(attackSpe != None):
+            self.warriorToTrain.attackSpe.append(attackSpe)
+            print(f"yay a new special attack : {attackSpe}")
+
+        if(transformation != None):
+            pass
+
+        print("--------------------------------")
 
 class Saiyen(WarriorProtocol):
 

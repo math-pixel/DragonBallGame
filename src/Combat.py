@@ -56,8 +56,11 @@ class FightManager():
         if self.fightCanContinue():
             self.startTurn()
         else:
-            # exitArena()
-            print("exit arena")
+            self.exitArena()
+
+    def exitArena(self):
+        print("exit arena")
+
 
         
 
