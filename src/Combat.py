@@ -16,6 +16,8 @@ class Observer:
 class Arena(Observer):
 
     def __init__(self, playerWarrior:WarriorProtocol, botWarrior:WarriorProtocol, fightTurn:FightTurn = FightTurn.PLAYER):
+        self.playerWarrior = playerWarrior
+        self.botWarrior = botWarrior
         self.fightManager = FightManager(playerWarrior, botWarrior, fightTurn)
         self.fightManager.add_observer(self)
         self.initArena()
@@ -30,6 +32,8 @@ class Arena(Observer):
         print(f"New Message : {type} - {message}")
         match type:
             case "Exit Arena":
+                self.playerWarrior.changeState(BasicState())
+                self.botWarrior.changeState(BasicState())
                 print("--------------------")
                 print("---- Exit Arena ----")
                 print("--------------------")
