@@ -1,0 +1,51 @@
+class FORM:
+    # Static method to display a form and execute the corresponding function based on the user's choice
+    @staticmethod
+    def display(title: str, choices: list[str], functions: list[callable]):
+        """
+        Displays a form with a title and choices, and executes the function corresponding to the user's choice.
+
+        :param title: The title to display at the top of the form.
+        :param choices: A list of strings representing the available choices.
+        :param functions: A list of functions to execute corresponding to the choices.
+        """
+        # Print the title
+        print(title)
+        
+        # Print the choices
+        for index, choice in enumerate(choices, start=1):
+            print(f"{index}: {choice}")
+        
+        # Get the user's input
+        try:
+            user_input = int(input("\nChoisis une option: "))
+            
+            # Check if the input is within the range of available choices
+            if 1 <= user_input <= len(choices):
+                # Execute the corresponding function
+                return functions[user_input - 1]()
+            else:
+                print("Choix invalide, veuillez réessayer.")
+                FORM.display(title, choices, functions)  # Re-display the form if the input is invalid
+                
+        except ValueError:
+            print("Veuillez entrer un numéro valide.")
+            FORM.display(title, choices, functions)  # Re-display the form in case of invalid input
+
+# Example usage:
+
+# def go_back():
+#     print("Retour en arrière...")
+
+# def simple_attack():
+#     print("Exécution de l'attaque simple...")
+
+# def special_attack():
+#     print("Exécution de l'attaque spéciale...")
+
+# Using the static class FORM to display choices and handle the logic
+# FORM.display(
+#     "Choisis le type de ton attaque :", 
+#     ["<-- Back", "simple Attaquer", "Attack Special"], 
+#     [go_back, simple_attack, special_attack]
+# )
