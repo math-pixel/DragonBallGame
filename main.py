@@ -1,6 +1,6 @@
 from src.Characteres import WarriorFactory, Race
 from src.TrainingMode import Training
-from src.Combat import Arene
+from src.Combat import Arena
 from src.tools import *
 
 # Personaliser mon personnage
@@ -28,8 +28,7 @@ def mainMenu():
             roomOfTime.trainCharactere(character, 1)
             mainMenu()
         case "2":
-            arene = Arene(character, bot)
-            arene.playerTurnFight()
+            arene = Arena(character, bot)
 
 
 

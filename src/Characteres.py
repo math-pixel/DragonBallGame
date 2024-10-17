@@ -57,6 +57,11 @@ class WarriorProtocol():
     def showStats(self):
         print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.state, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
 
+    def isAlive(self):
+        if self.life <= 0:
+            return False
+        return True
+
 class Saiyen(WarriorProtocol):
 
     def __init__(self, attacks, attackSpe, items, life=10, mana=10):
