@@ -21,13 +21,20 @@ def mainMenu():
     global character
     global arene
 
-    i = input("\n1: Entrainement \n 2 : Combat")
+    print("---------------------")
+    print("----- Main Menu -----")
+    print("---------------------")
+
+    i = input("\n1: Entrainement \n2: Combat\n3: exit")
     match i:
         case "1":
             roomOfTime.trainCharactere(character, 1)
             mainMenu()
         case "2":
             arene = Arena(character, bot)
+            mainMenu()
+        case "3":
+            pass
 
 
 

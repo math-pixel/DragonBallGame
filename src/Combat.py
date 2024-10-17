@@ -7,10 +7,17 @@ class FightTurn():
     PLAYER = "p"
     BOT = "b"
 
-class Arena():
+
+# Interface de l'Observateur
+class Observer:
+    def update(self, type:str = None, message:str = None):
+        pass
+
+class Arena(Observer):
 
     def __init__(self, playerWarrior:WarriorProtocol, botWarrior:WarriorProtocol, fightTurn:FightTurn = FightTurn.PLAYER):
         self.fightManager = FightManager(playerWarrior, botWarrior, fightTurn)
+        self.fightManager.add_observer(self)
         self.initArena()
 
     def initArena(self):
@@ -19,6 +26,14 @@ class Arena():
         print(" ----------------------------------- ")
         self.fightManager.startTurn()
 
+    def update(self,  type = None, message = None):
+        print(f"New Message : {type} - {message}")
+        match type:
+            case "Exit Arena":
+                print("--------------------")
+                print("---- Exit Arena ----")
+                print("--------------------")
+
 class FightManager():
 
     def __init__(self, warrior:WarriorProtocol, bot:WarriorProtocol, fightTurn:FightTurn = FightTurn.PLAYER):
@@ -26,6 +41,7 @@ class FightManager():
         self.bot = bot
         self.turn = fightTurn
         self.turnManager = WarriorTurnManager(self.warrior, self.bot)
+        self.observerListener = []
 
     def fightCanContinue(self):
 
@@ -39,6 +55,10 @@ class FightManager():
             return False
         else:
             return True
+        
+    def startFight(self):
+        while self.fightCanContinue():
+            self.startTurn()
     
     def startTurn(self):
         # Start and toggle turn
@@ -59,7 +79,18 @@ class FightManager():
             self.exitArena()
 
     def exitArena(self):
-        print("exit arena")
+        self.notify_observers("Exit Arena", self.turn)
+
+
+    def add_observer(self, observer):
+        self.observerListener.append(observer)
+
+    def remove_observer(self, observer):
+        self.observerListener.remove(observer)
+
+    def notify_observers(self, type, message):
+        for observer in self.observerListener:
+            observer.update(type, message)
 
 
         
@@ -101,6 +132,7 @@ class WarriorTurnManager:
 
     # -------------------------------- Bot Action -------------------------------- #
     def startBotTurn(self):
+        # TODO Bot action
         print("#BOT ACTION#")
 
 # -- combat
