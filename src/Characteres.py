@@ -65,23 +65,23 @@ class WarriorProtocol():
         
         print("------ Result of Training ------")
 
-        self.warriorToTrain.xp += xpEarn
-        self.warriorToTrain.checkLevelUp()
+        self.xp += xpEarn
+        self.checkLevelUp()
         
         if(life != None):
-            self.warriorToTrain.life += life
+            self.life += life
             print(f"life + {life}")
 
         if(mana != None):
-            self.warriorToTrain.mana += mana
+            self.mana += mana
             print(f"mana + {mana}")
 
         if(attack != None):
-            self.warriorToTrain.attack.append(attack)
+            self.attack.append(attack)
             print(f"yay a new attack : {attack}")
 
         if(attackSpe != None):
-            self.warriorToTrain.attackSpe.append(attackSpe)
+            self.attackSpe.append(attackSpe)
             print(f"yay a new special attack : {attackSpe}")
 
         if(transformation != None):
