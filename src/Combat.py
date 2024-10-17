@@ -15,7 +15,7 @@ class Observer:
 
 class Arena(Observer):
 
-    def __init__(self, playerWarrior:WarriorProtocol, botWarrior:WarriorProtocol, fightTurn:FightTurn = FightTurn.PLAYER):
+    def __init__(self, playerWarrior:Warrior, botWarrior:Warrior, fightTurn:FightTurn = FightTurn.PLAYER):
         self.playerWarrior = playerWarrior
         self.botWarrior = botWarrior
         self.fightManager = FightManager(playerWarrior, botWarrior, fightTurn)
@@ -34,13 +34,14 @@ class Arena(Observer):
             case "Exit Arena":
                 self.playerWarrior.changeState(BasicState())
                 self.botWarrior.changeState(BasicState())
+                # TODO reset player and bot
                 print("--------------------")
                 print("---- Exit Arena ----")
                 print("--------------------")
 
 class FightManager():
 
-    def __init__(self, warrior:WarriorProtocol, bot:WarriorProtocol, fightTurn:FightTurn = FightTurn.PLAYER):
+    def __init__(self, warrior:Warrior, bot:Warrior, fightTurn:FightTurn = FightTurn.PLAYER):
         self.warrior = warrior
         self.bot = bot
         self.turn = fightTurn
@@ -50,8 +51,9 @@ class FightManager():
     def fightCanContinue(self):
 
         print("-- stat")
-        print(f"Player life : {self.warrior.life}")
-        print(f"bot life : {self.bot.life}")
+        print(f"Player life : {self.warrior.stateTransformation.life}")
+        print(f"Player lvl : {self.warrior.level}")
+        print(f"bot life : {self.bot.stateTransformation.life}")
 
         if self.warrior.isAlive() == False : # warrior is dead
             return False
@@ -102,7 +104,7 @@ class FightManager():
 
 class WarriorTurnManager:
 
-    def __init__(self, playerWarrior:WarriorProtocol, botWarrior:WarriorProtocol):
+    def __init__(self, playerWarrior:Warrior, botWarrior:Warrior):
         self.playerWarrior = playerWarrior
         self.botWarrior = botWarrior
 
@@ -112,12 +114,20 @@ class WarriorTurnManager:
         # apply les effet du perso
         self.playerWarrior.applyStateEffect()
             # list les action possible
-        if not isinstance(self.playerWarrior.state, ParalyzedState):
-            FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ self.showItemsMenu, self.showAttackTypeMenu, None])
+        if not isinstance(self.playerWarrior.stateCombat, ParalyzedState):
+            FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ self.showItemsMenu, self.showAttackTypeMenu, self.transformationAction ])
         else:
             print("Vous etes paralysé et vous ne pouvez pas attaquer ce tour-ci.")
-            print(f"tour restant {self.playerWarrior.state.duration}")
+            print(f"tour restant {self.playerWarrior.stateCombat.duration}")
             FORM.display("Choisis une Action :", ["Utiliser un object ","Passer son tour"], [self.showItemsMenu, self.skipTurn])
+
+    def transformationAction(self):
+        if self.playerWarrior.canTransform():
+            self.playerWarrior.evolve()
+            print(f"Evolue en {self.playerWarrior.stateTransformation.__class__.__name__}")
+        else:
+            print("----- pas devolution disponible ----")
+            self.startPlayerTurn()
 
     # -------------------------------- Attack Menu ------------------------------- #
     def showAttackTypeMenu(self):
@@ -162,12 +172,13 @@ class WarriorTurnManager:
     def startBotTurn(self):
         # apply les effet du perso
         self.botWarrior.applyStateEffect() 
-        if not isinstance(self.botWarrior.state, ParalyzedState):
+        if not isinstance(self.botWarrior.stateCombat, ParalyzedState):
             # Define possible actions for the bot
             possible_actions = [
                 self.botSimpleAttack,    # Normal attack
                 self.botSpecialAttack,   # Special attack
-                self.botUseItem          # Use an item (if implemented)
+                self.botUseItem,          # Use an item (if implemented)
+                self.botEvolve
             ]
             
             # Randomly choose an action
@@ -197,6 +208,13 @@ class WarriorTurnManager:
             item.use(self.botWarrior)
         else:
             print("Le bot n'a pas d'objet disponible, il attaque à la place.")
+            self.botSimpleAttack()
+
+    def botEvolve(self):
+        if self.botWarrior.canTransform():
+            self.botWarrior.evolve()
+        else:
+            print("Le bot n'a pas d'evolution disponible, il utilise une attaque simple")
             self.botSimpleAttack()
 
     def skipTurn():

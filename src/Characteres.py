@@ -15,53 +15,44 @@ class WarriorFactory():
     def createWarrior(self, race:Race):
         match race:
             case Race.SAIYEN:
-                return Saiyen([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=20, mana=10)
+                return Warrior(SaiyenState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
             case Race.ANDROID:
-                return Android([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=10, mana=50)
+                return Warrior(AndroidState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
             case Race.NAMEKIANS:
-                return Namekians([PunchAttack()], [PunchCharged()], [SenzuBeam()], life=15, mana=30)
+                return Warrior(NamekiansState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
 
-class WarriorProtocol():
+class Warrior():
 
-    def __init__(self, race, attacks, attackSpe, items, life = 10, mana = 10):
-        self.constMaxLife:int = life
-        self.life:int = life
-        self.mana:int = mana
-        self.race:Race = race
+    def __init__(self,initial_state, attacks, attackSpe, items, description = ""):
+        self.stateTransformation = initial_state
+
+        self.name = ""
+
         self.attack:list[AttackStandard] = attacks
         self.attackSpe:list[AttackSpe] = attackSpe
-        self.state:StateWarrior = BasicState()
+
+        self.stateCombat:StateWarrior = BasicState()
         self.items:list[ItemProtocol] = items
-        self.level:int = 1
+
+        self.level:int = 0
         self.xp:int = 0
-        self.allTransformation:WarriorProtocol = []
-        self.unlockTransformation:WarriorProtocol = []
-        self.description:str = ""
+        self.description:str = description
 
     def checkLevelUp(self):
         if self.xp >= 10 and self.xp < 20:
-            if self.level == 1:
-                self.unlockTransformation.append(self.allTransformation[0])
-                print(f"yay a new transformation : {self.allTransformation[0].__name__}")
-            self.level = 2
+            self.level = 1
+            print("----- You have unlocked a new transformation ------")
         elif self.xp >= 20 and self.xp < 30:
-            if self.level == 2:
-                self.unlockTransformation.append(self.allTransformation[1])
-                print(f"yay a new transformation : {self.allTransformation[1].__name__}")
-
-            self.level = 3
-        # elif self.xp >= 30 and self.xp < 40:
-        #     if self.level == 2:
-        #         self.unlockTransformation.append(self.allTransformation[2])
-        #     self.level = 3
+            self.level = 2
+            print("----- You have unlocked a new transformation ------")
 
     def showStats(self):
-        print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.state, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
+        print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.stateCombat, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
 
     def isAlive(self):
-        return self.life > 0
+        return self.stateTransformation.life > 0
     
-    def upgradeWarrior(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
+    def upgradeWarrior(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None):
         
         print("------ Result of Training ------")
 
@@ -69,11 +60,11 @@ class WarriorProtocol():
         self.checkLevelUp()
         
         if(life != None):
-            self.life += life
+            self.stateTransformation.life += life
             print(f"life + {life}")
 
         if(mana != None):
-            self.mana += mana
+            self.stateTransformation.mana += mana
             print(f"mana + {mana}")
 
         if(attack != None):
@@ -84,17 +75,14 @@ class WarriorProtocol():
             self.attackSpe.append(attackSpe)
             print(f"yay a new special attack : {attackSpe}")
 
-        if(transformation != None):
-            pass
-
         print("--------------------------------")
 
     def applyStateEffect(self):
         # applique leffet au guerrier
-        self.state.applyEffect(self)
+        self.stateCombat.applyEffect(self)
 
-    def changeState(self, newState:StateWarrior):
-        self.state = newState
+    def changeState(self, newState:StateWarrior): # state of combat
+        self.stateCombat = newState
 
     def addItem(self, item:ItemProtocol):
         self.items.append(item)
@@ -102,73 +90,143 @@ class WarriorProtocol():
     def removeItem(self, itemIndex:int):
         self.items.pop(itemIndex)
 
-class Saiyen(WarriorProtocol):
+    def setStateEvolution(self, state):
+        self.stateTransformation = state
 
-    def __init__(self, attacks, attackSpe, items, life=10, mana=10):
-        super().__init__(Race.SAIYEN, attacks, attackSpe, items, life, mana)
-        self.allTransformation = [SuperSaiyen, GorilleGeant]
+    def evolve(self):
+        self.setStateEvolution(self.stateTransformation.getEvolve())
 
-class Android(WarriorProtocol):
-
-    def __init__(self, attacks, attackSpe, items, life=10, mana=10):
-        super().__init__(Race.ANDROID, attacks, attackSpe, items, life, mana)
-        self.allTransformation = [Cyborg, PotaraFusion]
+    def canTransform(self):
+        if self.stateTransformation.getEvolve() != None and self.level >= self.stateTransformation.getEvolve().levelRequired:
+            return True
+        return False
 
 
-class Namekians(WarriorProtocol):
+# ---------------------------------------------------------------------------- #
+#                                TRANSFORMATION                                #
+# ---------------------------------------------------------------------------- #
 
-    def __init__(self, attacks, attackSpe, items, life=10, mana=10):
-        super().__init__(Race.NAMEKIANS, attacks, attackSpe, items, life, mana)
-        self.allTransformation = [SuperNamekian, Assimilation]
+class TransformationState():
+    def __init__(self):
+        pass
+
+    def getEvolve(self):
+        pass
+class SaiyenState(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 20
+        self.life = self.constMaxLife
+        self.mana = 50
+        self.attackPower = 5
+        self.levelRequired = 0
+
+    def getEvolve(self):
+        return SuperSaiyenState()
+
+class NamekiansState(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 30
+        self.life = self.constMaxLife
+        self.mana = 10
+        self.attackPower = 2
+        self.levelRequired = 0
+
+
+    def getEvolve(self):
+        return SuperNamekianState()
+
+class AndroidState(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 10
+        self.life = self.constMaxLife
+        self.mana = 20
+        self.attackPower = 10
+        self.levelRequired = 0
+
+    def getEvolve(self):
+        return CyborgState()
 
 
 # ------------------------------ Transformation ------------------------------ #
 
 # ---------------------------------- SAIYEN ---------------------------------- #
-class SuperSaiyen(Saiyen):
+class SuperSaiyenState(TransformationState):
 
-    def __init__(self, saiyen:Saiyen):
-        self.saiyen = saiyen
-        self.life = self.saiyen.life + 20
-        self.description = f"+ {self.life} vie | "
+    def __init__(self):
+        self.constMaxLife = 30
+        self.life = self.constMaxLife
+        self.mana = 60
+        self.attackPower = 10
+        self.levelRequired = 1
 
-class GorilleGeant(Saiyen):
+    def getEvolve(self):
+        return GorilleGeantState()
 
-    def __init__(self, saiyen:Saiyen):
-        self.saiyen = saiyen
-        self.life = self.saiyen.life + 15
-        self.description = f"+ {self.life} vie | "
+class GorilleGeantState(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 30
+        self.life = self.constMaxLife
+        self.mana = 60
+        self.attackPower = 10
+        self.levelRequired = 2
+
+    def getEvolve(self):
+        print("pas devolution")
 
 
 # --------------------------------- NAMEKIANS -------------------------------- #
-class SuperNamekian(Namekians):
+class SuperNamekianState(TransformationState):
 
-    def __init__(self, namekian:Namekians):
-        self.namekian = namekian
-        self.life = self.namekian.life + 20
-        self.description = f"+ {self.life} vie | "
+    def __init__(self):
+        self.constMaxLife = 40
+        self.life = self.constMaxLife
+        self.mana = 20
+        self.attackPower = 20
+        self.levelRequired = 1
 
-class Assimilation(Namekians):
+    def getEvolve(self):
+        return AssimilationState()
 
-    def __init__(self, namekian:Namekians):
-        self.namekian = namekian
-        self.life = self.namekian.life + 20
-        self.description = f"+ {self.life} vie | "
+class AssimilationState(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 45
+        self.life = self.constMaxLife
+        self.mana = 30
+        self.attackPower = 25
+        self.levelRequired = 2
+
+    def getEvolve(self):
+        print("pas devolve")
 
 
 # ---------------------------------- ANDROID --------------------------------- #
-class Cyborg(Android):
+class CyborgState(TransformationState):
 
-    def __init__(self, android:Android):
-        self.android = android
-        self.life = self.android.life + 20
-        self.description = f"+ {self.life} vie | "
+    def __init__(self):
+        self.constMaxLife = 20
+        self.life = self.constMaxLife
+        self.mana = 25
+        self.attackPower = 15
+        self.levelRequired = 1
+
+    def getEvolve(self):
+        return PotaraFusionState()
 
 
 
-class PotaraFusion(Android):
+class PotaraFusionState(TransformationState):
 
-    def __init__(self, android:Android):
-        self.android = android
-        self.life = self.android.life + 30
-        self.description = f"+ {self.life} vie | "
+    def __init__(self):
+        self.constMaxLife = 40
+        self.life = self.constMaxLife
+        self.mana = 30
+        self.attackPower = 20
+        self.levelRequired = 2
+
+    def getEvolve(self):
+        print("pas devolution")

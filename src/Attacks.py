@@ -12,8 +12,8 @@ class AttackProtocol:
         self.giveEffect(warriorAttacker,  warriorDefender)
 
     def giveDammage(self, warriorAttacker,  warriorDefender):
-        warriorAttacker.mana -= self.consumeMana
-        warriorDefender.life -= self.dammage
+        warriorAttacker.stateTransformation.mana -= self.consumeMana
+        warriorDefender.stateTransformation.life -= warriorAttacker.stateTransformation.attackPower + self.dammage
 
     def giveEffect(self, warriorAttacker,  warriorDefender):
         pass

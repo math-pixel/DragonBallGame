@@ -15,8 +15,8 @@ class DragonBall(ItemProtocol):
         pass
 
     def use(self, warrior):
-        print(f" *** warrior {warrior.race} a utiliser une senzu beam***")
-        warrior.mana += 50
+        print(f" *** warrior {warrior.stateCombat} a utiliser une senzu beam***")
+        warrior.stateTransformation.mana += 50
         warrior.removeItem(warrior.items.index(self))
 
 class SenzuBeam(ItemProtocol):
@@ -25,8 +25,8 @@ class SenzuBeam(ItemProtocol):
         pass
 
     def use(self, warrior):
-        print(f" *** warrior {warrior.race} a utiliser une senzu beam***")
-        warrior.life = warrior.constMaxLife
+        print(f" *** warrior {warrior.stateCombat} a utiliser une senzu beam***")
+        warrior.stateTransformation.life = warrior.stateTransformation.constMaxLife
         warrior.removeItem(warrior.items.index(self))
 
 class Antidote(ItemProtocol):
@@ -35,6 +35,6 @@ class Antidote(ItemProtocol):
         pass
 
     def use(self, warrior):
-        warrior.life += 10
+        warrior.stateTransformation.life += 10
         warrior.removeItem(warrior.items.index(self))
-        print(f" *** warrior {warrior.race} a utiliser un antidote ***")
+        print(f" *** warrior {warrior.stateCombat} a utiliser un antidote ***")

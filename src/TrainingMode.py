@@ -1,4 +1,4 @@
-from src.Characteres import WarriorProtocol, WarriorFactory
+from src.Characteres import Warrior, WarriorFactory
 
 class Training():
 
@@ -12,7 +12,7 @@ class Training():
             Training.instance = Training()
         return Training.instance
 
-    def trainCharactere(self, warrior:WarriorProtocol, levelOfTraining):
+    def trainCharactere(self, warrior:Warrior, levelOfTraining):
         self.warriorToTrain = warrior
         self.startTraining(levelOfTraining)
 
