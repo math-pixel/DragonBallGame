@@ -1,9 +1,22 @@
+# from src.Characteres import WarriorProtocol
+
 # --------- Attack General Protocol
 class AttackProtocol:
     
     def __init__(self):
         self.consumeMana = 3
         self.dammage = 5
+
+    def attack(self, warriorAttacker,  warriorDefender):
+        self.giveDammage(warriorAttacker,  warriorDefender)
+        self.giveEffect(warriorAttacker,  warriorDefender)
+
+    def giveDammage(self, warriorAttacker,  warriorDefender):
+        warriorAttacker.mana -= self.consumeMana
+        warriorDefender.life -= self.dammage
+
+    def giveEffect(self, warriorAttacker,  warriorDefender):
+        pass
 
 # --------- All Attack Protocol
 class AttackStandard(AttackProtocol):

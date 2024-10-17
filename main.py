@@ -9,6 +9,7 @@ from src.tools import *
 
 
 character = None
+bot = WarriorFactory().createWarrior(Race.SAIYEN)
 roomOfTime = Training.getInstance()
 arene = None
 
@@ -27,7 +28,7 @@ def mainMenu():
             roomOfTime.trainCharactere(character, 1)
             mainMenu()
         case "2":
-            arene = Arene(character)
+            arene = Arene(character, bot)
             arene.playerTurnFight()
 
 
