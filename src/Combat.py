@@ -104,8 +104,16 @@ class WarriorTurnManager:
 
     # ------------------------------- Player action ------------------------------ #
     def startPlayerTurn(self):
-        # list les action possible
-        FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ None, self.showAttackTypeMenu, None])
+
+        # apply les effet du perso
+        self.playerWarrior.applyStateEffect()
+            # list les action possible
+        if not isinstance(self.playerWarrior.state, ParalyzedState):
+            FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ None, self.showAttackTypeMenu, None])
+        else:
+            print("Vous etes paralysé et vous ne pouvez pas attaquer ce tour-ci.")
+            print(f"tour restant {self.playerWarrior.state.duration}")
+            FORM.display("Choisis une Action :", ["Utiliser un object ","Passer son tour"], [None, None])
 
     def showAttackTypeMenu(self):
         FORM.display("Choisis le type de ton attack :", ["<-- Back","simple Attaquer","Attack Special"], [ self.startPlayerTurn, self.showSimpleAttackMenu, self.showSpecialAttackMenu])
@@ -132,8 +140,12 @@ class WarriorTurnManager:
 
     # -------------------------------- Bot Action -------------------------------- #
     def startBotTurn(self):
-        # TODO Bot action
-        print("#BOT ACTION#")
+        # apply les effet du perso
+        self.botWarrior.applyStateEffect() 
+        if not isinstance(self.botWarrior.state, ParalyzedState):
+            print("#BOT ACTION#")
+        else:
+            print("Le bot est paralysé et passe son tour.")
 
 # -- combat
 # choisir entre 

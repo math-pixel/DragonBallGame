@@ -58,9 +58,7 @@ class WarriorProtocol():
         print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.state, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
 
     def isAlive(self):
-        if self.life <= 0:
-            return False
-        return True
+        return self.life > 0
     
     def upgradeWarrior(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None, transformation = None):
         
@@ -89,6 +87,13 @@ class WarriorProtocol():
             pass
 
         print("--------------------------------")
+
+    def applyStateEffect(self):
+        # applique leffet au guerrier
+        self.state.applyEffect(self)
+
+    def changeState(self, newState:StateWarrior):
+        self.state = newState
 
 class Saiyen(WarriorProtocol):
 

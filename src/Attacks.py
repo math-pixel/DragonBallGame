@@ -1,4 +1,4 @@
-# from src.Characteres import WarriorProtocol
+from src.StateCharactere import *
 
 # --------- Attack General Protocol
 class AttackProtocol:
@@ -41,6 +41,17 @@ class PunchCharged(AttackSpe):
         super().__init__()
         self.consumeMana = 1
         self.dammage = 3
+
+# TODO change name of class
+class PoisonAttack(AttackStandard):
+    def __init__(self):
+        super().__init__()
+        self.consumeMana = 2
+        self.dammage = 1
+
+    def giveEffect(self, warriorAttacker, warriorDefender):
+        warriorDefender.changeState(PoisonedState(duration=3))
+        print(f"{warriorDefender.race} est empoisonné !")
 
 if __name__ == "__main__":
     punch = PunchAttack()
