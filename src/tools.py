@@ -1,3 +1,5 @@
+import os
+
 class FORM:
     # Static method to display a form and execute the corresponding function based on the user's choice
     @staticmethod
@@ -31,6 +33,10 @@ class FORM:
         except ValueError:
             print("Veuillez entrer un numéro valide.")
             FORM.display(title, choices, functions)  # Re-display the form in case of invalid input
+
+
+    def clear_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
 
 # Example usage:
 
