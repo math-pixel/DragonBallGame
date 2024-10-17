@@ -113,12 +113,13 @@ class WarriorTurnManager:
         self.playerWarrior.applyStateEffect()
             # list les action possible
         if not isinstance(self.playerWarrior.state, ParalyzedState):
-            FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ None, self.showAttackTypeMenu, None])
+            FORM.display("Choisis une Action :", ["Utiliser un object ","Attaquer ","Ce Transformer"], [ self.showItemsMenu, self.showAttackTypeMenu, None])
         else:
             print("Vous etes paralysé et vous ne pouvez pas attaquer ce tour-ci.")
             print(f"tour restant {self.playerWarrior.state.duration}")
-            FORM.display("Choisis une Action :", ["Utiliser un object ","Passer son tour"], [None, None])
+            FORM.display("Choisis une Action :", ["Utiliser un object ","Passer son tour"], [self.showItemsMenu, self.skipTurn])
 
+    # -------------------------------- Attack Menu ------------------------------- #
     def showAttackTypeMenu(self):
         FORM.display("Choisis le type de ton attack :", ["<-- Back","simple Attaquer","Attack Special"], [ self.startPlayerTurn, self.showSimpleAttackMenu, self.showSpecialAttackMenu])
 
@@ -141,6 +142,21 @@ class WarriorTurnManager:
             nameAttackArray.append(i.__class__.__name__)
             actionAttackArray.append(lambda : i.attack(self.playerWarrior, self.botWarrior))
         FORM.display("Choisis une attack :", nameAttackArray, actionAttackArray)
+
+        
+    # --------------------------------- item Menu -------------------------------- #
+    def showItemsMenu(self):
+        nameitemsArray = []
+        actionitemsArray = []
+
+        nameitemsArray.append("<-- Back")
+        actionitemsArray.append(self.startPlayerTurn)
+
+        for i in self.playerWarrior.items:
+            nameitemsArray.append(i.__class__.__name__)
+            actionitemsArray.append(lambda : i.use(self.playerWarrior))
+
+        FORM.display("Choisis un items :", nameitemsArray, actionitemsArray)
 
     # -------------------------------- Bot Action -------------------------------- #
     def startBotTurn(self):
@@ -182,6 +198,9 @@ class WarriorTurnManager:
         else:
             print("Le bot n'a pas d'objet disponible, il attaque à la place.")
             self.botSimpleAttack()
+
+    def skipTurn():
+        pass
 
 # -- combat
 # choisir entre 

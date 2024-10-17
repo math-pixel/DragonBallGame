@@ -24,6 +24,7 @@ class WarriorFactory():
 class WarriorProtocol():
 
     def __init__(self, race, attacks, attackSpe, items, life = 10, mana = 10):
+        self.constMaxLife:int = life
         self.life:int = life
         self.mana:int = mana
         self.race:Race = race
@@ -94,6 +95,12 @@ class WarriorProtocol():
 
     def changeState(self, newState:StateWarrior):
         self.state = newState
+
+    def addItem(self, item:ItemProtocol):
+        self.items.append(item)
+
+    def removeItem(self, itemIndex:int):
+        self.items.pop(itemIndex)
 
 class Saiyen(WarriorProtocol):
 
