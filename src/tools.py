@@ -11,6 +11,7 @@ class FORM:
         :param choices: A list of strings representing the available choices.
         :param functions: A list of functions to execute corresponding to the choices.
         """
+
         # Print the title
         print(title)
         
@@ -34,7 +35,7 @@ class FORM:
             print("Veuillez entrer un numéro valide.")
             FORM.display(title, choices, functions)  # Re-display the form in case of invalid input
 
-
+    @staticmethod
     def clear_screen():
         os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -55,3 +56,20 @@ class FORM:
 #     ["<-- Back", "simple Attaquer", "Attack Special"], 
 #     [go_back, simple_attack, special_attack]
 # )
+
+
+from enum import Enum
+
+# Enum pour différents niveaux de log et leurs couleurs
+class LogLevel(Enum):
+    INFO = "\x1b[32m"    # Vert pour les messages d'information
+    WARNING = "\x1b[33m" # Jaune pour les avertissements
+    ERROR = "\x1b[31m"   # Rouge pour les erreurs
+    DEBUG = "\x1b[34m"   # Bleu pour le débogage
+    CRITICAL = "\x1b[35m" # Magenta pour les messages critiques
+
+# Fonction de log
+def log(message: str, level: LogLevel):
+    # Appliquer la couleur en fonction du niveau de log
+    print(f"{level.value}{message}\x1b[0m")  # Le \x1b[0m réinitialise la couleur après le message
+

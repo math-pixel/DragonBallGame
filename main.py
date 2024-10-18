@@ -21,11 +21,12 @@ def mainMenu():
     global character
     global arene
 
-    print("---------------------")
-    print("----- Main Menu -----")
-    print("---------------------")
+    FORM.clear_screen()
+    log("+---------------------------------+", LogLevel.WARNING)
+    log("|----------- Main Menu -----------|", LogLevel.WARNING)
+    log("+---------------------------------+", LogLevel.WARNING)
 
-    i = input("\n1: Entrainement \n2: Combat\n3: exit")
+    i = input("\n1: Entrainement \n2: Combat\n3: exit\nChoisis une option : ")
     match i:
         case "1":
             roomOfTime.trainCharactere(character, 1)
@@ -40,17 +41,19 @@ def buildWarrior():
     builderWarrior = WarriorBuilder(character)
     name = input("Choisis un nom !")
     description = input("Choisis une description !")
-    FORM.display("Tiens pour commencer ! \nChoisis ton premier consommable :", ["DragonBall","SenzuBeam","Antidote"], [lambda: builderWarrior.addItem(DragonBall()), lambda : builderWarrior.addItem(SenzuBeam()), builderWarrior.addItem(Antidote())])
+    FORM.display("Tiens pour commencer ! \nChoisis ton premier consommable :", ["DragonBall","SenzuBeam","Antidote"], [lambda: builderWarrior.addItem(DragonBall()), lambda : builderWarrior.addItem(SenzuBeam()), lambda: builderWarrior.addItem(Antidote())])
     builderWarrior.setName(name)
     builderWarrior.setDescription(description)
 
 if __name__ == "__main__":
     creationCharacterMenu()
     buildWarrior()
-    print("------------------")
-    print("------  BAM  -----")
-    print("------------------")
+    FORM.clear_screen()
+    log("+---------------------------------+", LogLevel.WARNING)
+    log("|------------  Intro  ------------|", LogLevel.WARNING)
+    log("+---------------------------------+", LogLevel.WARNING)
     character.showPresentation()
+    input("appuie sur une touche")
     # saiyen = WarriorFactory().createWarrior(Race.SAIYEN)
     # print(saiyen.life)
     # print(saiyen.allTransformation)

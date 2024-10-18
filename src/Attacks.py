@@ -1,4 +1,5 @@
 from src.StateCharactere import *
+from src.tools import *
 
 # --------- Attack General Protocol
 class AttackProtocol:
@@ -51,7 +52,7 @@ class PoisonAttack(AttackStandard):
 
     def giveEffect(self, warriorAttacker, warriorDefender):
         warriorDefender.changeState(PoisonedState(duration=3))
-        print(f"{warriorDefender.race} est empoisonné !")
+        log(f"{warriorDefender.race} est empoisonné !", LogLevel.INFO)
 
 if __name__ == "__main__":
     punch = PunchAttack()

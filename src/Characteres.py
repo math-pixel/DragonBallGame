@@ -15,11 +15,11 @@ class WarriorFactory():
     def createWarrior(self, race:Race):
         match race:
             case Race.SAIYEN:
-                return Warrior(SaiyenState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
+                return Warrior(SaiyenState(), [PunchAttack()], [PunchCharged()], [])
             case Race.ANDROID:
-                return Warrior(AndroidState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
+                return Warrior(AndroidState(), [PunchAttack()], [PunchCharged()], [])
             case Race.NAMEKIANS:
-                return Warrior(NamekiansState(), [PunchAttack()], [PunchCharged()], [SenzuBeam()])
+                return Warrior(NamekiansState(), [PunchAttack()], [PunchCharged()], [])
 
 class Warrior():
 
@@ -41,10 +41,10 @@ class Warrior():
     def checkLevelUp(self):
         if self.xp >= 10 and self.xp < 20:
             self.level = 1
-            print("----- You have unlocked a new transformation ------")
+            log("----- You have unlocked a new transformation ------", LogLevel.INFO)
         elif self.xp >= 20 and self.xp < 30:
             self.level = 2
-            print("----- You have unlocked a new transformation ------")
+            log("----- You have unlocked a new transformation ------", LogLevel.INFO)
 
     def showStats(self):
         print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.stateCombat, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
@@ -60,28 +60,28 @@ class Warrior():
     
     def upgradeWarrior(self,xpEarn, life = None, mana = None, attack = None, attackSpe = None):
         
-        print("------ Result of Training ------")
+        log("------ Result of Training ------", LogLevel.DEBUG)
 
         self.xp += xpEarn
         self.checkLevelUp()
         
         if(life != None):
             self.stateTransformation.life += life
-            print(f"life + {life}")
+            log(f"life + {life}", LogLevel.INFO)
 
         if(mana != None):
             self.stateTransformation.mana += mana
-            print(f"mana + {mana}")
+            log(f"mana + {mana}", LogLevel.INFO)
 
         if(attack != None):
             self.attack.append(attack)
-            print(f"yay a new attack : {attack}")
+            log(f"yay a new attack : {attack}", LogLevel.INFO)
 
         if(attackSpe != None):
             self.attackSpe.append(attackSpe)
-            print(f"yay a new special attack : {attackSpe}")
+            log(f"yay a new special attack : {attackSpe}", LogLevel.INFO)
 
-        print("--------------------------------")
+        log("--------------------------------", LogLevel.DEBUG)
 
     def applyStateEffect(self):
         # applique leffet au guerrier

@@ -50,7 +50,7 @@ class FightManager():
 
     def fightCanContinue(self):
 
-        print("-- stat")
+        log("-- stat", LogLevel.DEBUG)
         print(f"Player life : {self.warrior.stateTransformation.life}")
         print(f"Player lvl : {self.warrior.level}")
         print(f"bot life : {self.bot.stateTransformation.life}")
@@ -70,11 +70,11 @@ class FightManager():
         # Start and toggle turn
 
         if self.turn == FightTurn.PLAYER:
-            print("----- Your turn -----")
+            log("----- Your turn -----", LogLevel.CRITICAL)
             self.turnManager.startPlayerTurn()
             self.turn = FightTurn.BOT
         else:
-            print("----- Bot turn -----")
+            log("----- Bot turn -----", LogLevel.CRITICAL)
             self.turnManager.startBotTurn()
             self.turn = FightTurn.PLAYER
 
