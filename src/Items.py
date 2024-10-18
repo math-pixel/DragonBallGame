@@ -15,7 +15,7 @@ class DragonBall(ItemProtocol):
         pass
 
     def use(self, warrior):
-        print(f" *** warrior {warrior.stateCombat} a utiliser une senzu beam***")
+        print(f" *** warrior {warrior.stateCombat} a utiliser une dragon ball***")
         warrior.stateTransformation.mana += 50
         warrior.removeItem(warrior.items.index(self))
 

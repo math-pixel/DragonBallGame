@@ -49,6 +49,12 @@ class Warrior():
     def showStats(self):
         print(self.life, self.mana, self.race, self.attack, self.attackSpe, self.stateCombat, self.items, self.level, self.xp, self.allTransformation, self.unlockTransformation, self.description)
 
+    def showPresentation(self):
+        noms_items = [item.__class__.__name__ for item in self.items]
+        attackList = [att.__class__.__name__ for att in self.attack]
+        attackSpeList = [attSpe.__class__.__name__ for attSpe in self.attackSpe]
+        print(f"Salut {self.name},\ntu as {self.stateTransformation.life} de vie et {self.stateTransformation.mana} de mana\ntu as ces attack : {', '.join(attackList)}\ntu as ces attack spe: {', '.join(attackSpeList)}\ntu as ces items : { ', '.join(noms_items)}.")
+
     def isAlive(self):
         return self.stateTransformation.life > 0
     
@@ -101,6 +107,34 @@ class Warrior():
             return True
         return False
 
+# ---------------------------------------------------------------------------- #
+#                                    Builder                                   #
+# ---------------------------------------------------------------------------- #
+
+class WarriorBuilder():
+
+    def __init__(self, warrior:Warrior):
+        self.warrior = warrior
+
+    def addAttack(self, attack):
+        self.warrior.attack.append(attack)
+        return self
+
+    def addAttackSpe(self, attack):
+        self.warrior.attackSpe.append(attack)
+        return self
+
+    def addItem(self, item):
+        self.warrior.items.append(item)
+        return self
+
+    def setDescription(self, description):
+        self.warrior.description = description
+        return self
+
+    def setName(self, name):
+        self.warrior.name = name
+        return self
 
 # ---------------------------------------------------------------------------- #
 #                                TRANSFORMATION                                #
