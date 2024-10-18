@@ -15,13 +15,13 @@ arene = None
 
 def creationCharacterMenu():
     global character
-    character = FORM.display("Choisis ta race :", ["Saiyen","Android","Namekian"], [lambda: WarriorFactory().createWarrior(Race.SAIYEN), lambda : WarriorFactory().createWarrior(Race.ANDROID), lambda : WarriorFactory().createWarrior(Race.NAMEKIANS)])
+    character = FORM.display("Choisis ta race :", ["Saiyen","Android","Namekian", "Pokemon"], [lambda: WarriorFactory().createWarrior(Race.SAIYEN), lambda : WarriorFactory().createWarrior(Race.ANDROID), lambda : WarriorFactory().createWarrior(Race.NAMEKIANS),lambda : WarriorFactory().createWarrior(Race.POKEMON)])
 
 def mainMenu():
     global character
     global arene
 
-    FORM.clear_screen()
+    # FORM.clear_screen()
     log("+---------------------------------+", LogLevel.WARNING)
     log("|----------- Main Menu -----------|", LogLevel.WARNING)
     log("+---------------------------------+", LogLevel.WARNING)

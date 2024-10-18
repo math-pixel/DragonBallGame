@@ -7,6 +7,7 @@ class Race():
     SAIYEN = "saiyen"
     ANDROID = "android"
     NAMEKIANS = "namekians"
+    POKEMON = "pokemon"
 
 class WarriorFactory():
     def __init__(self):
@@ -20,6 +21,8 @@ class WarriorFactory():
                 return Warrior(AndroidState(), [PunchAttack()], [PunchCharged()], [])
             case Race.NAMEKIANS:
                 return Warrior(NamekiansState(), [PunchAttack()], [PunchCharged()], [])
+            case Race.POKEMON:
+                return Warrior(Pokemon(), [PunchAttack()], [PunchCharged()], [])
 
 class Warrior():
 
@@ -183,6 +186,16 @@ class AndroidState(TransformationState):
     def getEvolve(self):
         return CyborgState()
 
+class Pokemon():
+    def __init__(self):
+        self.constMaxLife = 10
+        self.life = self.constMaxLife
+        self.mana = 20
+        self.attackPower = 10
+        self.levelRequired = 0
+
+    def getEvolve(self):
+        return Digimon()
 
 # ------------------------------ Transformation ------------------------------ #
 
@@ -260,6 +273,32 @@ class PotaraFusionState(TransformationState):
         self.life = self.constMaxLife
         self.mana = 30
         self.attackPower = 20
+        self.levelRequired = 2
+
+    def getEvolve(self):
+        print("pas devolution")
+
+
+# ------------------------------- Class custom ------------------------------- #
+class Digimon(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 30
+        self.life = self.constMaxLife
+        self.mana = 60
+        self.attackPower = 10
+        self.levelRequired = 1
+
+    def getEvolve(self):
+        return NimporteQuoiMon()
+    
+class NimporteQuoiMon(TransformationState):
+
+    def __init__(self):
+        self.constMaxLife = 2
+        self.life = self.constMaxLife
+        self.mana = 2
+        self.attackPower = 80
         self.levelRequired = 2
 
     def getEvolve(self):
